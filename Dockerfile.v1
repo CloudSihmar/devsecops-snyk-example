@@ -1,0 +1,9 @@
+FROM maven:3.8-jdk-8 as builder
+WORKDIR /app
+COPY . .
+RUN mvn clean package
+
+FROM openjdk:8-jdk-alpine
+COPY --from=builder /app/target/easybuggy.jar /run/easybuggy.jar
+EXPOSE 8080
+CMD java -jar /run/easybuggy.jar
